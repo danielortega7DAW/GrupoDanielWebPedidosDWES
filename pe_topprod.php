@@ -8,7 +8,7 @@ echo'<title> Consulta las ventas </title>';
         //include_once './config.php';
         
         //Para incluir las funciones
-        include_once './funcionespedidos.php';
+        include_once './funcionesLucas.php';
         //Conexion de la base de datos
         $pdo=connectDBpedidos();
 

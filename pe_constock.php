@@ -13,7 +13,7 @@
        //Para incluir la conexion de la base de datos si usamos el config.php
         //include_once './config.php';
         //Para incluir las funciones
-        include_once './funcionespedidos.php';
+        include_once './funcionesLucas.php';
 
         //Conexion de la base de datos
         $pdo=connectDBpedidos();
