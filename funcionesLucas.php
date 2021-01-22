@@ -130,13 +130,13 @@ function consultarFechaVentas($pdo, $inicio, $fin){
 
     $pdo=connectDBpedidos();
 
-        $sql = $pdo->prepare("SELECT orderdetails.productcode as codigo, products.productname as nombre, orders.orderdate as fecha, orderdetails.quantityordered as cantidad from 
-            orders JOIN orderdetails ON orders.ordernumber = orderdetails.ordernumber join products 
-                on products.productcode=orderdetails.productcode where orders.orderdate >= :inicio  
-                    AND orders.orderdate <= :fin order by orderdate limit 25");
-                        $sql->bindParam(':inicio', $inicio);
-                        $sql->bindParam(':fin', $fin);
-                        $sql->execute();
+        $sql = $pdo->prepare("SELECT orderdetails.productcode as codigo, products.productname as nombre, orders.orderdate as fecha, 
+            orderdetails.quantityordered as cantidad from orders JOIN orderdetails ON orders.ordernumber = orderdetails.ordernumber join products 
+                    on products.productcode=orderdetails.productcode where orders.orderdate >= :inicio  
+                        AND orders.orderdate <= :fin order by orderdate limit 25");
+                            $sql->bindParam(':inicio', $inicio);
+                            $sql->bindParam(':fin', $fin);
+                            $sql->execute();
 
            return $sql;                 
 
