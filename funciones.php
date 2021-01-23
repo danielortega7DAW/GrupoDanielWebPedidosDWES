@@ -7,7 +7,7 @@ function comprobarAdmin($username, $passcode){
 #	  - $passcode
 #
 # Funcionalidad:
-# Comprobar que existe un regitro en la tabla "admin" con ese $username y $passcode.
+# Comprobar que existe un registro en la tabla "admin" con ese $username y $passcode.
 #
 # Retorna: Los datos de la tabla "admin" / NULL si no existe el registro o ha ocurrido un error.
 #
