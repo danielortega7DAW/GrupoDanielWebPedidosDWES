@@ -11,10 +11,11 @@ if (!isset($_SESSION["usuario"]) || $_SESSION["usuario"] === false) {
 
    #Lucas Fadavi Solanilla
 
-    /*Refactorizacion: se ha modulado mas el codigo en relacion a versiones anteriores.
-    Se ha implementado una conexion global, para todo el programa y las funciones,
-    Try y Catch añadidos para un posible tratamiento de errores futuro y 
-    se han cuidado mucho mas los detalles esteticos*/
+    /*Refactorizacion: 
+    -Codigo mas modulado en relación a versiones anteriores.
+    -Se ha implementado una conexion global para todo el programa y las funciones.
+    -Try y Catch añadidos para un posible tratamiento de errores futuro. 
+    -Detalles esteticos mas cuidados*/
 
      //Para incluir las funciones
      include_once './funciones.php';
