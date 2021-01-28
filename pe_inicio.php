@@ -1,3 +1,5 @@
+ <!--Código por: Raquel Alcázar--> 
+
 <?php
 	session_start();
 	include_once("funciones.php");
