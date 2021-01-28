@@ -41,6 +41,7 @@
 			echo $seleccionado."<br>";
 			
 			/*No sé si usar una variable dentro de una secuencia es posible y por eso da error*/
+	       /*El error consiste en que siempre muestra que el stock es 0, supongo que no detecta bien la variable*/
 			$sql="SELECT quantityInStock FROM products WHERE productName LIKE '".$seleccionado."%'";
 			$uwu=$pdo->exec($sql);
 			echo $uwu;
