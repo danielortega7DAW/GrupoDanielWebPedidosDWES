@@ -1,3 +1,5 @@
+<?php
+
 include_once 'conexion.php';
 
 function comprobarAdmin($username, $passcode){
@@ -67,3 +69,6 @@ function obtenerNombre($id){
 		return null;
 	}
 }
+
+?>
+
