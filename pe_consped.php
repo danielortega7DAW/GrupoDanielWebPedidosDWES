@@ -25,7 +25,7 @@
     
         if (!isset($_POST) || empty($_POST)) {
 
-            $customerNumberArray=obtenerClientesNum($conexion);
+            $customerNumberArray=obtenerClientesNum();
 ?>
         <h1 class="text-center"> CONSULTA DE PEDIDOS </h1>
             <form id="product-form" name="formulario" action="pe_consped.php" method="post" class="card-body">
@@ -43,7 +43,7 @@
         }else{ 
 
                 $customerNumber = ($_POST['cliente']);
-                getInfoPedidoCliente($conexion, $customerNumber);
+                getInfoPedidoCliente($customerNumber);
 
             }
         }
