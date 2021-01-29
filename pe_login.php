@@ -39,7 +39,7 @@
 		<input type="text" name="username" required/><br><br>
 		
 		<label for="passcode">Passcode:</label>
-		<input type="text" name="passcode" required/><br><br>
+		<input type="password" name="passcode" required/><br><br>
 
 		<input type="submit" value="Iniciar sesión"/>
 	</form>
