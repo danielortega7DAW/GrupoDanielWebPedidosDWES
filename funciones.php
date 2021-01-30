@@ -1,3 +1,4 @@
+ <!--Código por: Rodrigo Cano--> 
 <?php
 function Conect(){
 # Función 'Conect'. 
