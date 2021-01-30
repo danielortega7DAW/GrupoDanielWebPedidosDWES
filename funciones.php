@@ -406,7 +406,195 @@ function getInfoPedidoCliente($customerNumber){
 
 	        }
         }
-    }    
+    }
+
+
+# Función 'listaProductos'. 
+# Parámetros: 
+# 	
+# Funcionalidad: Se prepara una consulta sql del productName y que la quantityInStock sea superior a 0
+# 
+# Return: lista de los productos
+#
+# Alex Santana
+function listaProductos(){
+        include("conexion.php");
+        //global $conexion;
+        $sql="SELECT productName FROM products WHERE quantityInStock > 0";
+        $stmt=$conexion->prepare($sql);
+        $stmt->execute();
+        $total=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $total;
+    }
+
+
+# Función 'stockProdcutos'. 
+# Parámetros: $prod
+# 	
+# Funcionalidad: Consulta sql de la quantityInStock Total de un   productName en concreto
+# 
+# Return: la cantidad de un producto en concreto que se ha seleccionado desde el select
+#
+# Alex Santana
+function stockProductos($prod){
+    include("conexion.php");
+    $sql="SELECT quantityInStock FROM products WHERE productName='$prod'";
+    $stmt=$conexion->prepare($sql);
+    $stmt->execute();
+    $total=$stmt->fetchColumn();
+    return $total;
+}
+
+
+# Función 'tablaProductos'. 
+# Parámetros: 
+# 	
+# Funcionalidad: Obtener en formato tabla, el productName de producto y la cantidad que se haya seleccionado desde el select 
+# 
+# Return: 
+#
+# Alex Santana
+function tablaProductos(){
+        include("conexion.php");
+        echo "<strong class='tit'>Detalle de la Orden</strong>
+            <table> 
+                <tr>
+                    <th>Nombre Producto</th>
+                    <th>Cantidad</th>
+                </tr>";
+
+        foreach($_SESSION["carrito"] as $indice => $cantidad){
+            $sql="SELECT productName FROM products where productName = '$indice'";
+            $stmt=$conexion->prepare($sql);
+            $stmt->execute();
+            $total=$stmt->fetchColumn();
+            echo "<tr>";
+            echo "<td> ".$total. "</td>";
+            echo "<td>".$cantidad."</td>";					
+            echo "</tr>";
+        }
+        echo "</table>";
+}
+
+
+# Función 'precioTotal'. 
+# Parámetros: 
+# 	
+# Funcionalidad: Obtener el precio total de todos los productos que se hayan añadido al carrito 
+# 
+# Return: 
+#
+# Alex Santana
+function precioTotal(){
+    include("conexion.php");
+    $totalPrecio=0;
+    foreach($_SESSION["carrito"] as $indice => $pro){
+        //Consulta sql del precio de la tabla producs
+        $sql="SELECT buyPrice as precio FROM products WHERE productName='$indice'";
+        $stmt=$conexion->prepare($sql);
+        $stmt->execute();
+        $total=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach($total as $precioProd){
+            $totalP=$precioProd["precio"];
+        }
+        $totalPrecio=$totalPrecio+($totalP * $pro);
+    }
+    echo "Total a pagar: <strong>$totalPrecio &euro;</strong><br><br>";	
+}
+
+
+# Función 'precioPago'. 
+# Parámetros: 
+# 	
+# Funcionalidad: Obtener el precio Total de productos, se usará posteriormente para otra función
+# 
+# Return: Precio total de productos
+#
+# Alex Santana
+function precioPago(){
+    include("conexion.php");
+    $totalPrecio=0;
+    foreach($_SESSION["carrito"] as $indice => $pro){
+        //Consulta sql del precio de la tabla producs
+        $sql="SELECT buyPrice as precio FROM products WHERE productName='$indice'";
+        $stmt=$conexion->prepare($sql);
+        $stmt->execute();
+        $total=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach($total as $precioProd){
+            $totalP=$precioProd["precio"];
+        }
+        $totalPrecio=$totalPrecio+($totalP * $pro);
+    }
+
+        return $totalPrecio;
+}
+
+
+
+# Función 'comprar'. 
+# Parámetros: 
+# 	
+# Funcionalidad: Se hace la validación del $checkNumber con una expresion regular si no es correcta dará un mensaje de error. Si el checkNumber es válido se procede ha realizar la compra
+# 
+# Return: Precio total de productos
+#
+# Alex Santana
+function comprar($checkNumber){
+    include("conexion.php");
+    //expresion regular para validar el nº de tarjeta
+    $errCheck="/[A-Z]{2}[0-9]{5}/";
+    $repe=false;
+    $total2=precioPago();//Utilizamos la función
+    if(preg_match($errCheck, $checkNumber)){
+        $sql="SELECT checkNumber FROM payments";
+        $stmt=$conexion->prepare($sql);
+        $stmt->execute();
+        $total=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach($total as $num){
+            if($num["checkNumber"]==$checkNumber){//Verifica si el nº se repite
+                $repe=true;
+            }
+        }
+
+        if($repe==true){
+            echo "La tarjeta introducid ya se encuentra registrado, prueba con otra";
+        } else{//Si no se repite el método de pago se añade a la bbdd
+                $id=$_SESSION["usuario"];
+                //$numCard=$checkNumber;
+                //Fomato para la fecha del sistema
+                $fecha=getdate()["year"]."-".getdate()["mon"]."-".getdate()["mday"];
+                //Consulta para insertar el método de pago
+                $sql2="INSERT INTO payments values('$id','$checkNumber','$fecha','$total2')";
+                $conexion->exec($sql2);
+                echo "Gracias por tu compra";
+
+            //Actualizar el stock de la tabla products, cuando se compre un producto (dependiendi de la cantidad a elegir) se reducirá el stock en la tabla products en la columna de quantityInStock
+            foreach ($_SESSION["carrito"] as $id2 => $cant){
+                $sql="UPDATE products SET quantityInStock=(quantityInStock-$cant) where productName='$id2'";
+                $conexion->exec($sql);
+            }
+
+            //Añadir los datos de fecha en la tabla orders
+            //Siguiente orden para poder añadir los datos 
+            $newOrder="SELECT max(orderNumber) as mayor from orders";
+            $stmt=$conexion->prepare($newOrder);
+            $stmt->execute();
+            $totalOrders=$stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach($totalOrders as $ords){
+                $newOrder=$ords["mayor"]+1;
+            }
+
+            //Incluir datos de la compra
+            $sqlOrders="INSERT into orders values ('$newOrder','$fecha','$fecha',null,'Payed','','$id')";
+            $conexion->exec($sqlOrders);
+
+            //Se reinicia el carrito
+            $_SESSION["carrito"]=null;
+        }
+    } else{
+        echo "<p class='error'>Tarjeta de cr&eacute;dito no v&aacute;lida, formato (AA99999)";
+    }
+}
 
 
 ?>
