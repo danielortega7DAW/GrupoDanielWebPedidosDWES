@@ -727,6 +727,31 @@ function comprar($checkNumber){
             //Incluir datos de la compra
             $sqlOrders="INSERT into orders values ('$newOrder','$fecha','$fecha',null,'Payed','','$id')";
             $conexion->exec($sqlOrders);
+		///Insertar datos en la tabla orderDtails
+		$linea=1;
+		foreach($_SESSION["carrito"] as $dato => $cantTotal){
+			$codP="SELECT productCode as codi FROM products WHERE productName='$dato'";
+			$stmt=$conexion->prepare($codP);
+			$stmt->execute();
+			$total3=$stmt->fetchAll(PDO::FETCH_ASSOC);
+			//Código del producto
+			foreach($total3 as $produ){
+				$pCod=$produ["codi"]; 
+			}
+			//precio del producto
+			$precioP="SELECT buyPrice as prec FROM products WHERE productName='$dato'";
+			$stmt=$conexion->prepare($precioP);
+			$stmt->execute();
+			$total4=$stmt->fetchAll(PDO::FETCH_ASSOC);
+			foreach($total4 as $prP){
+				$precioUnidad=$prP["prec"];
+			}
+
+			//INSERCCION de DATOS
+			$insertOrder="INSERT INTO orderdetails values('$newOrder', '$pCod', '$cantTotal', '$precioUnidad', '$linea')";
+			$conexion->exec($insertOrder);
+			$linea=$linea+1;
+		}
 
             //Se reinicia el carrito
             $_SESSION["carrito"]=null;
