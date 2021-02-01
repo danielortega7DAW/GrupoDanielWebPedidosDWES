@@ -25,12 +25,12 @@
                     <option> <?php echo $producto ?> </option>
                 <?php endforeach; ?>
             </select>
-            </br>
+            <br>
             <br>
         
             <input type="submit" value="Mostrar stock">
 
-        </FORM>
+        </form>
 
 <?php        
         }else{
