@@ -61,10 +61,6 @@ if(isset($_SESSION["usuario"])){//Comprueba que has iniciado sesion en caso cont
 	} else if ((isset($_POST['compra']) || $errorCheck )  &&  count($_SESSION['cesta'])>0 ) {//Formulario de informacion del cliente
 		echo "<form name='alta_ped' action='pe_altaped.php' method='post'>";
 		echo "<h3>Cliente</h3>";
-		echo "<label for='numeroCliente'>Numero de cliente: </label>";
-		echo "<select name='customerNumber'>";
-		Lista("customerNumber", "SELECT * FROM customers");
-		echo "</select><br>";
 		echo "<label for='numeroPago'>Numero de Pago: </label>";
 		echo "<input type='text' name='checkNumber' placeholder='AA99999' /> <br />";
 		echo "<input type='submit' value='Finalizar Compra' name='compraFin'>";
@@ -79,7 +75,7 @@ if(isset($_SESSION["usuario"])){//Comprueba que has iniciado sesion en caso cont
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {//Compra de producto
 
 		if (isset($_POST['compraFin']) && count($_SESSION['cesta'])>0  && !$errorCheck) {
-			$customerNumber= limpiar_campo($_POST["customerNumber"]);
+			$customerNumber= obtenerNombre($_SESSION["usuario"]);
 			$checkNumber = limpiar_campo($_POST["checkNumber"]);
 			$ahora = date('Y-m-d');
 			//----------->crear el nuevo ordern
