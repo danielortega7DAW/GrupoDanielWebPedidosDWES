@@ -75,7 +75,7 @@ if(isset($_SESSION["usuario"])){//Comprueba que has iniciado sesion en caso cont
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {//Compra de producto
 
 		if (isset($_POST['compraFin']) && count($_SESSION['cesta'])>0  && !$errorCheck) {
-			$customerNumber= obtenerNombre($_SESSION["usuario"]);
+			$customerNumber= $_SESSION["usuario"];
 			$checkNumber = limpiar_campo($_POST["checkNumber"]);
 			$ahora = date('Y-m-d');
 			//----------->crear el nuevo ordern
