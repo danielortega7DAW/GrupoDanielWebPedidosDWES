@@ -11,7 +11,8 @@
     
     try {
 
-       $productos = obtenerStock();  
+      	$conn=conect();
+       	$productos = obtenerStock($conn);  
     
        if (!isset($_POST) || empty($_POST)) { 
            
