@@ -737,4 +737,24 @@ function comprar($checkNumber){
     }
 }
 
+function obtenerStock($pdo) {
+	
+	
+# Función 'obtener stock'. 
+# Parámetros: 
+# $pdo
+# Funcionalidad: Select del nombre y el stock de los productos
+# 
+# Return: nombre y stock de los productos
+#
+# Daniel Ortega
+		$stock = array();
+    	$sql = "SELECT productName, quantityInStock FROM products";
+
+		foreach ($pdo->query($sql) as $row) {
+            $productos[]=$row['productName'];   
+    
+		}
+		return $productos;
+	} 
 ?>
