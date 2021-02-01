@@ -459,7 +459,7 @@ function consultarHistorico($id){
 
 function obtenerClientesNum(){
 # Función 'obtenerClientesNum'. 
-# Parámetros: Conexión a la bbdd 
+# Parámetros:
 # 	
 # Funcionalidad: Conseguir un Array con los customerNumber
 # 
@@ -484,7 +484,7 @@ function obtenerClientesNum(){
 
 function getInfoPedidoCliente($customerNumber){
 # Función 'getInfoPedidoCliente'. 
-# Parámetros:  Conexión y el Numero de Cliente que obtenemos del despleagable
+# Parámetros:  $customerNumber (numero de Cliente que obtenemos del despleagable)
 # 	
 # Funcionalidad:
 #	- Hacemos una busqueda del orderNumber, orderDate, status realizados por un cliente
