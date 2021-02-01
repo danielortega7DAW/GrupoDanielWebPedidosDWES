@@ -10,9 +10,8 @@
         include_once 'funciones.php';
     
     try {
-
-      	$conn=conect();
-       	$productos = obtenerStock($conn);  
+	    
+       	$productos = obtenerStock($conexion);  
     
        if (!isset($_POST) || empty($_POST)) { 
            
@@ -60,23 +59,8 @@
                 he modificado el parametro que se le pasa a las funciones $pdo 
                 por una conexion directa mediante el archivo conexion.php que 
                 se incluye en las funciones.
-                ¡Modifico el include_once de la linea 10, cuidado a la hora de realizar pruebas!.
                 
-                function obtenerStock() {
-
-    global $conexion;
-
-    $stock = array();
-    $sql = "SELECT productName, quantityInStock FROM products";
-
-    foreach ($conexion->query($sql) as $row) {
-        $productos[]=$row['productName'];   
-
-    }
-    return $productos;
-} 
-                
-                */
+		*/
         }    
     }catch(PDOException $e)
         {  
